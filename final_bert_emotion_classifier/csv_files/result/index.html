@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Woojung's visualization</title>
+  <!--link rel="stylesheet" type="text/css" href="./timeline.css"-->
+  
+</head>
+<style>
+#Line_Controls_Chart {
+  overflow-x: scroll;
+  overflow-y: visible;
+  width: 100%;
+  min-height: 600px;
+}
+
+#loadData {
+    margin-bottom:20px;
+    padding:7px;
+    border-radius:50px;
+    background-color:rgb(159, 250, 98);
+    font-size:13px;
+}
+
+#running_hour_wrapper {
+    margin-bottom: 20px;
+}
+</style>
+<body>
+  <h4>Visualization of Emotion flows with Timeline Chart</h4>
+
+  <div id="running_hour_wrapper">Total Running Hour : <span id="running_hour"></span></div>
+  <input type="button" id="loadData" value="upload CSV file" />
+  <div id="Line_Controls_Chart">
+      <!-- 라인 차트 생성할 영역 -->
+      <div id="lineChartArea" style="padding:0px 20px 0px 0px;"></div>
+      <!-- 컨트롤바를 생성할 영역 -->
+      <div id="controlsArea" style="padding:0px 20px 0px 0px;"></div>
+  </div>
+  
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery.min.js"></script>
+  <!-- google charts -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <!--script src="./timeline.js"-->
+  <!--script src="./timeline_final.js"-->
+    
+</body>
+<script>
+$(document).ready(function(){
+    //filePath = 'test.csv'
+    filePath = 'STT_emotion_predictions.tsv'
+
+    //google.charts.load('current', {'packages':['line','controls']});
+    google.charts.load("current", {packages:["timeline"]});
+    
+
+    $("#loadData").click(function(){
+        $.ajax({
+            url: filePath,
+            dataType: 'text',
+          }).done(readCSV);
+    })
+});
+
+var rowArr = new Array();
+
+function readCSV(data){
+    
+    var emotionArr = ["admiration","amusement","anger","annoyance","approval","caring","confusion","curiosity","desire","disappointment","disapproval","disgust","embarrassment","excitement","fear","gratitude","grief","joy","love","nervousness","optimism","pride","realization","relief","remorse","sadness","surprise","neutral"]
+    var allRows = data.split(/\r?\n|\r/); 
+    var totalRunningTime = 0;
+    //var emotionArr = allRows[0].split(",");
+
+    //console.log("typeof(allRows) : ", typeof(allRows));
+    console.log("allRows : ", allRows);
+ 
+    for (var i = 1; i < allRows.length; i++) {
+        //console.log("index : ", i);
+        singleRow = allRows[i].split("\t");
+        var text = singleRow[0];
+        var start_time = singleRow[1];
+        var end_time = singleRow[2];
+        var emotion = singleRow[3];
+
+        var indexOfEmotion = emotionArr.indexOf(emotion);
+        
+        //var indexOfEmotion2 = emotionArr.indexOf("sadness")
+        //console.log("indexOfEmotion : ", indexOfEmotion)
+        //console.log("indexOfEmotion2 : ", indexOfEmotion2)
+        //console.log(singleRow[4])
+        //console.log("singleRow.length : ", singleRow.length)
+        console.log("singleRow : ", singleRow);
+        if (indexOfEmotion == -1){
+            console.log("1")
+            continue
+        }
+        
+        if (singleRow.length < 5){ // num of elements of tuple
+            console.log("2")
+            continue
+        }
+
+        if (parseFloat(start_time) > parseFloat(end_time)){
+            console.log("3")
+            continue
+        }
+        
+        if (singleRow.length >= 7 && singleRow[5] != "" && singleRow[6] != ""){
+            if (emotion == "neutral" && singleRow[5] != "neutral"){
+                emotion = singleRow[5];
+            }
+        }
+
+        var tempRow = new Array();
+        tempRow[0] = emotion;
+        tempRow[1] = text;
+        //tempRow[2] = new Date(singleRow[2] * 1000);
+        //tempRow[3] = new Date(singleRow[3] * 1000);
+        tempRow[2] = createDateObj(start_time);
+        tempRow[3] = createDateObj(end_time);
+
+        rowArr.push(tempRow);
+        totalRunningTime = end_time;
+        console.log("tempRow : ", tempRow);
+    }
+    console.log("rowArr : ", rowArr)
+    console.log("allRows : ", allRows);
+    console.log("finish reading file");
+    console.log("running_hour : ", allRows[allRows.length - 1][3])
+    console.log("allRows.length : ", allRows.length);
+
+    var totalRunningHours = parseInt(totalRunningTime / 60 / 60);
+    var totalRunningMinutes = parseInt((totalRunningTime / 60) % 60);
+    var totalRunningSeconds = parseInt(totalRunningTime % 60);
+    if (totalRunningHours > 0){
+        var totalRunning = String(totalRunningHours) + "h " + String(totalRunningMinutes) + "m " + String(totalRunningSeconds) + "s";
+    } 
+    else if (totalRunningMinutes > 0){ 
+        var totalRunning = String(totalRunningMinutes) + "m " + String(totalRunningSeconds) + "s";
+    } 
+    else if (totalRunningSeconds > 0) {
+        var totalRunning = String(totalRunningSeconds) + "s";
+    }
+    else {
+        $("#running_hour_wrapper").css({
+            "display":"none"
+        })
+    }
+    $("#running_hour").html(totalRunning)
+
+    chartDrowFun.chartDrow(); //chartDrow() 실행
+}
+
+function createDateObj(seconds){
+    //var seconds = seconds * 1000;
+    
+    var tempHours = seconds / 60 / 60;
+    var tempMinutes = (seconds / 60) % 60;
+    var tempSeconds = seconds % 60;
+    var tempMillisec = (seconds * 1000) % 1000;
+
+    return new Date(00, 00, 00, tempHours, tempMinutes, tempSeconds, tempMillisec);
+}
+
+var chartDrowFun = {
+
+  chartDrow : function(){
+      var chartData = '';
+
+      //날짜형식 변경하고 싶으시면 이 부분 수정하세요.
+      var chartDateformat 	= 'yyyy년MM월dd일';
+      //라인차트의 라인 수
+      var chartLineCount    = 10;
+      //컨트롤러 바 차트의 라인 수
+      var controlLineCount	= 10;
+
+
+      function drawDashboard() {
+
+            var container = document.getElementById('Line_Controls_Chart');
+            var chart = new google.visualization.Timeline(container);
+            var dataTable = new google.visualization.DataTable();
+            dataTable.addColumn({ type: 'string', id: 'emotion' });
+            dataTable.addColumn({ type: 'string', id: 'sentence' });
+            dataTable.addColumn({ type: 'date', id: 'Start' });
+            dataTable.addColumn({ type: 'date', id: 'End' });
+            //dataTable.addColumn({ type: 'number', id: 'index' });
+            dataTable.addRows(rowArr);
+            /*
+            dataTable.addRows([
+                ['sadness', 'That game hurt', new Date(0,0,0,0,0,0,0), new Date(0,0,0,0,0,5,30), 1],
+                ['love', 'Man I love reddit.', new Date(0,0,0,0,0,4,20), new Date(0,0,0,0,0,7,40), 2],
+                ['neutral', '[NAME] was nowhere near them, he was by the Falcon. ', new Date(0,0,0,0,0,7,50), new Date(0,0,0,0,0,11,22), 3],
+                ['surprised', "He isn't as big, but he's still quite popular. I've heard the same thing about his content. Never watched him much.", new Date(0,0,0,0,0,12), new Date(0,0,0,0,0,16), 3],
+                ['sadness', 'That is odd.', new Date(0,0,0,0,0,15,256), new Date(0,0,0,0,0,17,523), 4],
+                ['love', "Pretty much every Punjabi dude I've met.", new Date(0,0,0,0,0,17,555), new Date(0,0,0,0,0,20,567), 5],
+                ['neutral', "Pretty much every Punjabi dude I've met.", new Date(0,0,0,0,0,20,566), new Date(0,0,0,0,0,25), 6],
+                ['angry', "Pretty much every Punjabi dude I've met.", new Date(0,0,0,0,0,24), new Date(0,0,0,0,0,29), 7],
+                ['neutral', "Pretty much every Punjabi dude I've met.", new Date(0,0,0,0,0,30), new Date(0,0,0,0,0,32), 8]
+            ])
+            */
+
+            var options = {
+                'title':'Timeline of emotions in psychology consultation',
+                'width':10000, // 3500
+                //'height':900,
+                //backgroundColor: '#ffd',
+                legend: 'none',
+                bar: {groupWidth: '95%'},
+                timeline: {
+                    colorByRowLabel: true,
+                    showBarLabels: false,
+                    rowLabelStyle: {fontName: 'Helvetica', fontSize: 20, color: '#603913' },
+                    barLabelStyle: { fontName: 'Garamond', fontSize: 10 }
+                }
+            };
+
+            chart.draw(dataTable, options);
+
+      }
+      google.charts.setOnLoadCallback(drawDashboard);
+
+    }
+  }
+
+
+
+</script>
+</html>

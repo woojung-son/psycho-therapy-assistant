@@ -1,0 +1,50 @@
+Traceback (most recent call last):
+  File "/scratch/kedu14/woojung/albert/mycode/albert_practice.py", line 45, in <module>
+    tokenizer = createTokenizer()
+  File "/scratch/kedu14/woojung/albert/mycode/albert_practice.py", line 4, in createTokenizer
+    return FullTokenizer("../albert_base/assets/30k-clean.vocab", spm_model_file="../albert_base/assets/30k-clean.model", do_lower_case=True)
+  File "/home01/kedu14/.conda/envs/woojung/lib/python3.8/site-packages/bert/tokenization/albert_tokenization.py", line 243, in __init__
+    self.sp_model.Load(spm_model_file)
+  File "/home01/kedu14/.conda/envs/woojung/lib/python3.8/site-packages/sentencepiece/__init__.py", line 367, in Load
+    return self.LoadFromFile(model_file)
+  File "/home01/kedu14/.conda/envs/woojung/lib/python3.8/site-packages/sentencepiece/__init__.py", line 171, in LoadFromFile
+    return _sentencepiece.SentencePieceProcessor_LoadFromFile(self, arg)
+OSError: Not found: "../albert_base/assets/30k-clean.model": No such file or directory Error #2
+Traceback (most recent call last):
+  File "/scratch/kedu14/woojung/albert/mycode/albert_practice.py", line 45, in <module>
+    tokenizer = createTokenizer()
+  File "/scratch/kedu14/woojung/albert/mycode/albert_practice.py", line 4, in createTokenizer
+    return FullTokenizer("../albert_base/assets/30k-clean.vocab", spm_model_file="../albert_base/assets/30k-clean.model", do_lower_case=True)
+  File "/home01/kedu14/.conda/envs/woojung/lib/python3.8/site-packages/bert/tokenization/albert_tokenization.py", line 243, in __init__
+    self.sp_model.Load(spm_model_file)
+  File "/home01/kedu14/.conda/envs/woojung/lib/python3.8/site-packages/sentencepiece/__init__.py", line 367, in Load
+    return self.LoadFromFile(model_file)
+  File "/home01/kedu14/.conda/envs/woojung/lib/python3.8/site-packages/sentencepiece/__init__.py", line 171, in LoadFromFile
+    return _sentencepiece.SentencePieceProcessor_LoadFromFile(self, arg)
+OSError: Not found: "../albert_base/assets/30k-clean.model": No such file or directory Error #2
+Traceback (most recent call last):
+  File "/scratch/kedu14/woojung/albert/mycode/albert_practice.py", line 45, in <module>
+    tokenizer = createTokenizer()
+  File "/scratch/kedu14/woojung/albert/mycode/albert_practice.py", line 4, in createTokenizer
+    return FullTokenizer("../albert_base/assets/30k-clean.vocab", spm_model_file="../albert_base/assets/30k-clean.model", do_lower_case=True)
+  File "/home01/kedu14/.conda/envs/woojung/lib/python3.8/site-packages/bert/tokenization/albert_tokenization.py", line 243, in __init__
+    self.sp_model.Load(spm_model_file)
+  File "/home01/kedu14/.conda/envs/woojung/lib/python3.8/site-packages/sentencepiece/__init__.py", line 367, in Load
+    return self.LoadFromFile(model_file)
+  File "/home01/kedu14/.conda/envs/woojung/lib/python3.8/site-packages/sentencepiece/__init__.py", line 171, in LoadFromFile
+    return _sentencepiece.SentencePieceProcessor_LoadFromFile(self, arg)
+OSError: Not found: "../albert_base/assets/30k-clean.model": No such file or directory Error #2
+Traceback (most recent call last):
+  File "/scratch/kedu14/woojung/albert/mycode/albert_practice.py", line 45, in <module>
+    tokenizer = createTokenizer()
+  File "/scratch/kedu14/woojung/albert/mycode/albert_practice.py", line 4, in createTokenizer
+    return FullTokenizer("../albert_base/assets/30k-clean.vocab", spm_model_file="../albert_base/assets/30k-clean.model", do_lower_case=True)
+  File "/home01/kedu14/.conda/envs/woojung/lib/python3.8/site-packages/bert/tokenization/albert_tokenization.py", line 243, in __init__
+    self.sp_model.Load(spm_model_file)
+  File "/home01/kedu14/.conda/envs/woojung/lib/python3.8/site-packages/sentencepiece/__init__.py", line 367, in Load
+    return self.LoadFromFile(model_file)
+  File "/home01/kedu14/.conda/envs/woojung/lib/python3.8/site-packages/sentencepiece/__init__.py", line 171, in LoadFromFile
+    return _sentencepiece.SentencePieceProcessor_LoadFromFile(self, arg)
+OSError: Not found: "../albert_base/assets/30k-clean.model": No such file or directory Error #2
+srun: error: gpu09: tasks 0-1: Exited with exit code 1
+srun: error: gpu10: tasks 2-3: Exited with exit code 1

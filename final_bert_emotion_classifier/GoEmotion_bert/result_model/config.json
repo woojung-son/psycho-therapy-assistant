@@ -1,0 +1,1 @@
+{"num_labels": 28, "learning_rate": 5e-05, "num_train_epochs": 4.0, "warmup_proportion": 0.1, "sentiment": 0.0, "correlations": 0.0, "batch_size": 16, "num_train_examples": 139174, "num_eval_examples": 17183, "data_dir": "data", "output_dir": "./result_model/", "train_fname": "me_train_old.tsv", "dev_fname": "me_test_old.tsv", "test_fname": "me_dev_old.tsv"}
