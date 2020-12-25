@@ -38,4 +38,4 @@ Run run.sh with the path of sound file as a command line parameter.
 
 [2] https://github.com/google-research/bert bert 
 
-[3] Mattias Heldner, Jens Edlund, Pauses, gaps and overlaps in conversations, Oct, 2010.
+[3] Mattias Heldner, Jens Edlund, _Pauses, gaps and overlaps in conversations_, Oct, 2010.
