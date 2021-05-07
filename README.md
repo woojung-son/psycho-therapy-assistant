@@ -9,6 +9,7 @@
 
 `mybert_classifier.py` is the file which gets the output of `speech2text.py` as a input file, then returns the sentences of the contents with 28 kinds of emotion tags using customized _bert_ model.
 
+
 1. When you execute `speech2text.py` file, it will read .wav file which you give as a command line parameter.
 2. Resample input file and adjust the sampling rate using _librosa_.
 3. Split the input file in each one-minute interval and read each of them.
