@@ -3,7 +3,7 @@
 
 # psycho-therapy-assistant
 <strong>_psycho-therapy-assistant_</strong> is a assistive tool for Psychotherapy that listens to counselee's speaking, show a timeline graph of flow of emotions to counselor. It classifies sentences of speaking into 28 kinds of emotions (e.g. happiness, sadness, disappointment, neutral, ...). It internally uses _Deepspeech_ as a STT(speech-to-text) model, _bert_ as a tagging model.
-
+ 
 ## System Process
 `speecn2text.py` is the file which listens to the input sound file, then takes the contents down as a text using _deepspeech_ STT(speech to text) library.
 
